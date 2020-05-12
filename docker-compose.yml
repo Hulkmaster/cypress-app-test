@@ -1,0 +1,21 @@
+version: '3'
+services:
+  app:
+    image: "node:12-alpine"
+    hostname: app
+    ports: 
+      - 80:80
+    working_dir: /app
+    volumes: 
+      - ./app:/app
+    entrypoint: node index.js
+
+  cypress:
+    image: "cypress/included:4.5.0"
+    depends_on:
+      - app
+    environment:
+      - CYPRESS_baseUrl=http://app
+    working_dir: /e2e
+    volumes:
+      - ./e2e:/e2e
